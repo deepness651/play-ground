@@ -1,1 +1,1 @@
-# play-ground
+# Simple push notification service
