@@ -44,6 +44,14 @@ git clone https://github.com/deepness651/push-notification-service.git
 mvn package
 
 java -jar target/push-notification-service-1.0.0-SNAPSHOT.jar
+
+# if you are running behind a proxy 
+java -jar -Dhttps.proxyHost=<PROXY_HOST> -Dhttps.proxyPort=<PROXY_PORT> target/push-notification-service-1.0.0-SNAPSHOT.jar
+
+or
+
+mvn spring-boot:run -Dhttps.proxyHost=<PROXY_HOST> -Dhttps.proxyPort=<PROXY_PORT>
+
 ```
 You can also run the service without packaging it using 
 ```
