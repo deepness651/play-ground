@@ -1,5 +1,7 @@
 package uk.co.home.push;
 
+import java.net.InetSocketAddress;
+
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.tcp.ProxyProvider;
 import reactor.netty.tcp.TcpClient;
 
 @Configuration
@@ -25,12 +28,26 @@ public class AppConfig {
 	
     @Bean
     WebClient webClient() {
-    	TcpClient tcpClient = TcpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 20000)
-                .doOnConnected(connection ->
-                        connection.addHandlerLast(new ReadTimeoutHandler(10))
-                                  .addHandlerLast(new WriteTimeoutHandler(10)));  
+    	var proxyHost = System.getProperty("https.proxyHost");
+    	var proxyPort = System.getProperty("https.proxyPort");
     	
+    	TcpClient tcpClient;
+    	if (proxyHost != null) {
+    		tcpClient = TcpClient.create()
+    				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 20000)
+    				.proxy(proxy -> proxy.type(ProxyProvider.Proxy.HTTP).address(new InetSocketAddress(proxyHost, Integer.valueOf(proxyPort))))
+    				.doOnConnected(connection ->
+    				connection.addHandlerLast(new ReadTimeoutHandler(10))
+    				.addHandlerLast(new WriteTimeoutHandler(10)));
+    	} else {
+        	tcpClient = TcpClient.create()
+    				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 20000)
+    				.noProxy()
+    				.doOnConnected(connection ->
+    				connection.addHandlerLast(new ReadTimeoutHandler(10))
+    				.addHandlerLast(new WriteTimeoutHandler(10)));  
+    	}
+
 		return WebClient.builder()
     					 .baseUrl(API_URL)
     					 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))

@@ -30,6 +30,9 @@ import uk.co.home.push.status.BadRequestException;
 @ExtendWith(MockitoExtension.class)
 class PushNotificationHandlerTest {
 
+	private static final String A_MESSAGE = "aMessage";
+	private static final String A_TITLE = "aTitle";
+	private static final String A_USER = "aUser";
 	private static final String BODY_SOME_BODY = "{\"body\": \"some body\"}";
 	private static final String STATUS_SOME_ERROR = "{\"status\": \"some error\"}";
 
@@ -57,10 +60,10 @@ class PushNotificationHandlerTest {
 
 	@Test
 	void testPushNotificationSuccess() throws Exception {
-		var user = newUser("bbcUser1", "anAccessToken");
+		var user = newUser(A_USER, "anAccessToken");
 		var pushNotificationRequest = PushNotificationRequest.Builder
-															 .create().withUsername("bbcUser1")
-															 .withTitle("aTitle").withBody("aMessage").build();
+															 .create().withUsername(A_USER)
+															 .withTitle(A_TITLE).withBody(A_MESSAGE).build();
 		pushApiMock.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
 											  .setBody(BODY_SOME_BODY));
 		
@@ -76,10 +79,10 @@ class PushNotificationHandlerTest {
 
 	@Test
 	void testPushNotificationFailsWith4xx() throws Exception {
-		var user = newUser("bbcUser1", "anAccessToken");
+		var user = newUser(A_USER, "anAccessToken");
 		var pushNotificationRequest = PushNotificationRequest.Builder
-															 .create().withUsername("bbcUser1")
-															 .withTitle("aTitle").withBody("aMessage").build();
+															 .create().withUsername(A_USER)
+															 .withTitle(A_TITLE).withBody(A_MESSAGE).build();
 		
 		pushApiMock.enqueue(new MockResponse().setResponseCode(401).setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
 											  .setBody(STATUS_SOME_ERROR));
@@ -97,10 +100,10 @@ class PushNotificationHandlerTest {
 
 	@Test
 	void testPushNotificationFailsWith5xx() throws Exception {
-		var user = newUser("bbcUser1", "anAccessToken");
+		var user = newUser(A_USER, "anAccessToken");
 		var pushNotificationRequest = PushNotificationRequest.Builder
-															 .create().withUsername("bbcUser1")
-															 .withTitle("aTitle").withBody("aMessage").build();
+															 .create().withUsername(A_USER)
+															 .withTitle(A_TITLE).withBody(A_MESSAGE).build();
 		
 		pushApiMock.enqueue(new MockResponse().setResponseCode(500).setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
 											  .setBody(STATUS_SOME_ERROR));
