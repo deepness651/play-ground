@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 import uk.co.home.push.domain.PushNotificationRequest;
 import uk.co.home.push.domain.SimplePushNotification;
 import uk.co.home.push.domain.User;
-import uk.co.home.status.BadRequestException;
+import uk.co.home.push.status.BadRequestException;
 
 @Component
 public class PushNotificationHandler {

@@ -1,4 +1,4 @@
-package uk.co.home.status;
+package uk.co.home.push.status;
 
 import org.springframework.http.HttpStatus;
 

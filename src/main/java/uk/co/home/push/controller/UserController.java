@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.co.home.push.domain.CreateUserRequest;
 import uk.co.home.push.domain.User;
 import uk.co.home.push.repository.UserRepository;
-import uk.co.home.status.AlreadyRegisteredException;
-import uk.co.home.status.ApiStatus;
+import uk.co.home.push.status.AlreadyRegisteredException;
+import uk.co.home.push.status.ApiStatus;
 
 @RestController
 @RequestMapping(path = "api/v1", produces = MediaType.APPLICATION_JSON_VALUE, method = {RequestMethod.GET, RequestMethod.POST})

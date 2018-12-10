@@ -34,8 +34,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import uk.co.home.push.domain.CreateUserRequest;
 import uk.co.home.push.domain.User;
 import uk.co.home.push.repository.UserRepository;
-import uk.co.home.status.AlreadyRegisteredException;
-import uk.co.home.status.ApiStatus;
+import uk.co.home.push.status.AlreadyRegisteredException;
+import uk.co.home.push.status.ApiStatus;
 	
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)

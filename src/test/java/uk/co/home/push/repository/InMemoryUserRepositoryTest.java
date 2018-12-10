@@ -11,8 +11,8 @@ import org.junit.runner.RunWith;
 
 import uk.co.home.push.domain.CreateUserRequest;
 import uk.co.home.push.repository.InMemoryUserRepository;
-import uk.co.home.status.AlreadyRegisteredException;
-import uk.co.home.status.DoesNotExistException;
+import uk.co.home.push.status.AlreadyRegisteredException;
+import uk.co.home.push.status.DoesNotExistException;
 
 @RunWith(JUnitPlatform.class)
 public class InMemoryUserRepositoryTest {

@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import uk.co.home.push.domain.PushNotificationRequest;
 import uk.co.home.push.domain.User;
-import uk.co.home.status.BadRequestException;
+import uk.co.home.push.status.BadRequestException;
 
 @ExtendWith(MockitoExtension.class)
 class PushNotificationHandlerTest {
@@ -42,8 +42,9 @@ class PushNotificationHandlerTest {
 		pushApiMock = new MockWebServer();
 		pushApiMock.start();
 		String hostAndPort = String.format("http://%s:%s", pushApiMock.getHostName(), pushApiMock.getPort());
-		
-        WebClient client = WebClient.builder().baseUrl(hostAndPort)
+
+        WebClient client = WebClient.builder()
+        								.baseUrl(hostAndPort)
         								.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE).build();
 
         underTest = new PushNotificationHandler(client);

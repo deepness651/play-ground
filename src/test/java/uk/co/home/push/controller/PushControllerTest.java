@@ -34,8 +34,8 @@ import uk.co.home.push.domain.PushNotificationRequest;
 import uk.co.home.push.domain.User;
 import uk.co.home.push.handler.PushNotificationHandler;
 import uk.co.home.push.repository.UserRepository;
-import uk.co.home.status.ApiStatus;
-import uk.co.home.status.BadRequestException;
+import uk.co.home.push.status.ApiStatus;
+import uk.co.home.push.status.BadRequestException;
 	
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)

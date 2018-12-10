@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.co.home.push.domain.PushNotificationRequest;
 import uk.co.home.push.handler.PushNotificationHandler;
 import uk.co.home.push.repository.UserRepository;
-import uk.co.home.status.ApiStatus;
-import uk.co.home.status.BadRequestException;
-import uk.co.home.status.DoesNotExistException;
+import uk.co.home.push.status.ApiStatus;
+import uk.co.home.push.status.BadRequestException;
+import uk.co.home.push.status.DoesNotExistException;
 
 @RestController
 @RequestMapping(path = "api/v1", produces = MediaType.APPLICATION_JSON_VALUE, method = {RequestMethod.POST})

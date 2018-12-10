@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 import uk.co.home.push.domain.CreateUserRequest;
 import uk.co.home.push.domain.User;
-import uk.co.home.status.AlreadyRegisteredException;
-import uk.co.home.status.DoesNotExistException;
+import uk.co.home.push.status.AlreadyRegisteredException;
+import uk.co.home.push.status.DoesNotExistException;
 
 @Component
 public class InMemoryUserRepository implements UserRepository {

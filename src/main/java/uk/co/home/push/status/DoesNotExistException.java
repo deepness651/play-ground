@@ -1,4 +1,4 @@
-package uk.co.home.status;
+package uk.co.home.push.status;
 
 public class DoesNotExistException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
