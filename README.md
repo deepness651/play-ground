@@ -38,7 +38,7 @@ When you use Maven as described here, it will automatically download the require
 ```
 git clone https://github.com/deepness651/push-notification-service.git
 ```
-2. Build and run the service using maven
+2. Build and run the service using maven in project folder
 
 ```
 mvn package
