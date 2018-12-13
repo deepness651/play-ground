@@ -12,13 +12,13 @@ public class PushNotificationRequest {
     private String title;
     private String body;
 
-    public PushNotificationRequest() { 	
+    public PushNotificationRequest() {
     }
 
     public PushNotificationRequest(PushNotificationRequest template) {
-    	this.username = template.username;
-    	this.title = template.title;
-    	this.body = template.body;
+        this.username = template.username;
+        this.title = template.title;
+        this.body = template.body;
     }
 
     public String getUsername() {
@@ -47,14 +47,14 @@ public class PushNotificationRequest {
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
-    
+
     public static final class Builder {
         private final PushNotificationRequest object;
 
         private Builder(final PushNotificationRequest template) {
-        	this.object = template;
+            this.object = template;
         }
-        
+
         public static Builder create() {
             return new Builder(new PushNotificationRequest());
         }
@@ -66,20 +66,20 @@ public class PushNotificationRequest {
         public PushNotificationRequest build() {
             return new PushNotificationRequest(object);
         }
-        
+
         public Builder withUsername(String username) {
             object.username = username;
             return this;
         }
-        
+
         public Builder withTitle(String title) {
-        	object.title = title;
-        	return this;
+            object.title = title;
+            return this;
         }
-        
+
         public Builder withBody(String body) {
-        	object.body = body;
-        	return this;
+            object.body = body;
+            return this;
         }
-   }
+    }
 }

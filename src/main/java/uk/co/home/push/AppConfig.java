@@ -24,34 +24,24 @@ import reactor.netty.tcp.TcpClient;
 @EnableScheduling
 @EnableRetry
 public class AppConfig {
-	private final static String API_URL = "https://api.pushbullet.com";
-	
+    private final static String API_URL = "https://api.pushbullet.com";
+
     @Bean
     WebClient webClient() {
-    	var proxyHost = System.getProperty("https.proxyHost");
-    	var proxyPort = System.getProperty("https.proxyPort");
-    	
-    	TcpClient tcpClient;
-    	if (proxyHost != null) {
-    		tcpClient = TcpClient.create()
-    				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 20000)
-    				.proxy(proxy -> proxy.type(ProxyProvider.Proxy.HTTP).address(new InetSocketAddress(proxyHost, Integer.valueOf(proxyPort))))
-    				.doOnConnected(connection ->
-    				connection.addHandlerLast(new ReadTimeoutHandler(10))
-    				.addHandlerLast(new WriteTimeoutHandler(10)));
-    	} else {
-        	tcpClient = TcpClient.create()
-    				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 20000)
-    				.noProxy()
-    				.doOnConnected(connection ->
-    				connection.addHandlerLast(new ReadTimeoutHandler(10))
-    				.addHandlerLast(new WriteTimeoutHandler(10)));  
-    	}
+        var proxyHost = System.getProperty("https.proxyHost");
+        var proxyPort = System.getProperty("https.proxyPort");
 
-		return WebClient.builder()
-    					 .baseUrl(API_URL)
-    					 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
-    					 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
-    					 .build();
+        TcpClient tcpClient;
+        if (proxyHost != null) {
+            tcpClient = TcpClient.create().option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 20000)
+                    .proxy(proxy -> proxy.type(ProxyProvider.Proxy.HTTP).address(new InetSocketAddress(proxyHost, Integer.valueOf(proxyPort))))
+                    .doOnConnected(connection -> connection.addHandlerLast(new ReadTimeoutHandler(10)).addHandlerLast(new WriteTimeoutHandler(10)));
+        } else {
+            tcpClient = TcpClient.create().option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 20000).noProxy()
+                    .doOnConnected(connection -> connection.addHandlerLast(new ReadTimeoutHandler(10)).addHandlerLast(new WriteTimeoutHandler(10)));
+        }
+
+        return WebClient.builder().baseUrl(API_URL).clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE).build();
     }
 }

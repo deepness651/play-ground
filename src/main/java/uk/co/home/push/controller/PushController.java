@@ -21,50 +21,51 @@ import uk.co.home.push.status.BadRequestException;
 import uk.co.home.push.status.DoesNotExistException;
 
 @RestController
-@RequestMapping(path = "api/v1", produces = MediaType.APPLICATION_JSON_VALUE, method = {RequestMethod.POST})
+@RequestMapping(path = "api/v1", produces = MediaType.APPLICATION_JSON_VALUE, method = { RequestMethod.POST })
 public class PushController {
-	private final UserRepository userRepository;
-	private final PushNotificationHandler pushNotificationHandler;
+    private final UserRepository userRepository;
+    private final PushNotificationHandler pushNotificationHandler;
 
-	@Autowired
-	public PushController(UserRepository userRepository, PushNotificationHandler pushNotificationHandler) {
-		this.userRepository = userRepository;
-		this.pushNotificationHandler = pushNotificationHandler;
-	}
+    @Autowired
+    public PushController(UserRepository userRepository, PushNotificationHandler pushNotificationHandler) {
+        this.userRepository = userRepository;
+        this.pushNotificationHandler = pushNotificationHandler;
+    }
 
     @PostMapping(path = "/push")
     public ResponseEntity<?> pushNotification(@RequestBody PushNotificationRequest pushNotificationRequest) {
-    	final MultiValueMap<String, String> standardCacheHeaders = getCacheHeaders();
-    	try {	// validate request
-    		if (pushNotificationRequest.getUsername().isBlank() || pushNotificationRequest.getTitle().isBlank() || pushNotificationRequest.getBody().isBlank()) {
-    			throw new BadRequestException("Bad request");
-    		}
-    		
-    		var user = userRepository.getUser(pushNotificationRequest.getUsername());
-    		if (user == null) { // user doesn't exist
-    			throw new DoesNotExistException("User doesn't exist");
-    		}
-    		
-    		pushNotificationHandler.pushNotification(user, pushNotificationRequest);
-    		userRepository.incrementUserNotificationCount(user.getUsername());
-    		return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.OK, "Push notification sent"), standardCacheHeaders, HttpStatus.OK);
-		} catch (DoesNotExistException | BadRequestException e) {
-			return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.BAD_REQUEST, e.getLocalizedMessage()), 
-															standardCacheHeaders, HttpStatus.BAD_REQUEST);
-	    } catch (Exception e) {
-	    	return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage()), 
-	    													standardCacheHeaders, HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
+        final MultiValueMap<String, String> standardCacheHeaders = getCacheHeaders();
+        try { // validate request
+            if (pushNotificationRequest.getUsername().isBlank() || pushNotificationRequest.getTitle().isBlank()
+                    || pushNotificationRequest.getBody().isBlank()) {
+                throw new BadRequestException("Bad request");
+            }
+
+            var user = userRepository.getUser(pushNotificationRequest.getUsername());
+            if (user == null) { // user doesn't exist
+                throw new DoesNotExistException("User doesn't exist");
+            }
+
+            pushNotificationHandler.pushNotification(user, pushNotificationRequest);
+            userRepository.incrementUserNotificationCount(user.getUsername());
+            return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.OK, "Push notification sent"), standardCacheHeaders, HttpStatus.OK);
+        } catch (DoesNotExistException | BadRequestException e) {
+            return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.BAD_REQUEST, e.getLocalizedMessage()), standardCacheHeaders,
+                    HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage()), standardCacheHeaders,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     private MultiValueMap<String, String> getCacheHeaders() {
-    	var headerMap = new LinkedMultiValueMap<String, String>(); 
-    	
-    	headerMap.add(HttpHeaders.CACHE_CONTROL, "private, max-age=0, s-maxage=0, no-cache, no-store, must-revalidate");
-    	headerMap.add(HttpHeaders.PRAGMA, "no-cache");
-    	headerMap.add(HttpHeaders.EXPIRES, "0");    	
-    	headerMap.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
-    	
-    	return headerMap;
+        var headerMap = new LinkedMultiValueMap<String, String>();
+
+        headerMap.add(HttpHeaders.CACHE_CONTROL, "private, max-age=0, s-maxage=0, no-cache, no-store, must-revalidate");
+        headerMap.add(HttpHeaders.PRAGMA, "no-cache");
+        headerMap.add(HttpHeaders.EXPIRES, "0");
+        headerMap.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
+
+        return headerMap;
     }
 }

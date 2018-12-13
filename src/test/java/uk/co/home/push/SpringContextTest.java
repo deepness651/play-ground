@@ -14,8 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import uk.co.home.push.Application;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@WebAppConfiguration
-@ContextConfiguration(classes = {Application.class})
+@ContextConfiguration(classes = { Application.class })
 public class SpringContextTest {
     @Autowired
     ApplicationContext ctx;
