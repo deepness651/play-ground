@@ -16,17 +16,17 @@ public class User {
     private String accessToken;
     private Date creationTime;
     private Integer numOfNotificationsPushed;
-    
-    public User() { 	
+
+    public User() {
     }
-    
+
     public User(User template) {
-    	this.username = template.username;
-    	this.accessToken = template.accessToken;
-    	this.creationTime = template.creationTime;
-    	this.numOfNotificationsPushed = template.numOfNotificationsPushed;
+        this.username = template.username;
+        this.accessToken = template.accessToken;
+        this.creationTime = template.creationTime;
+        this.numOfNotificationsPushed = template.numOfNotificationsPushed;
     }
-    
+
     public String getUsername() {
         return username;
     }
@@ -58,14 +58,14 @@ public class User {
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
-    
+
     public static final class Builder {
         private final User object;
 
         private Builder(final User template) {
-        	this.object = template;
+            this.object = template;
         }
-        
+
         public static Builder create() {
             return new Builder(new User());
         }
@@ -77,25 +77,25 @@ public class User {
         public User build() {
             return new User(object);
         }
-        
+
         public Builder withUsername(String username) {
             object.username = username;
             return this;
         }
-        
+
         public Builder withAccessToken(String accessToken) {
-        	object.accessToken = accessToken;
-        	return this;
+            object.accessToken = accessToken;
+            return this;
         }
-        
+
         public Builder withCreationTime(Date creationTime) {
-        	object.creationTime = creationTime;
-        	return this;
+            object.creationTime = creationTime;
+            return this;
         }
-        
+
         public Builder withNumOfNotificationsPushed(Integer numOfNotificationsPushed) {
-        	object.numOfNotificationsPushed = numOfNotificationsPushed;
-        	return this;
+            object.numOfNotificationsPushed = numOfNotificationsPushed;
+            return this;
         }
     }
 }

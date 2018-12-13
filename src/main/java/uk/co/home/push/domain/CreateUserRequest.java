@@ -11,12 +11,12 @@ public class CreateUserRequest {
     private String username;
     private String accessToken;
 
-    public CreateUserRequest() { 	
+    public CreateUserRequest() {
     }
 
     public CreateUserRequest(CreateUserRequest template) {
-    	this.username = template.username;
-    	this.accessToken = template.accessToken;
+        this.username = template.username;
+        this.accessToken = template.accessToken;
     }
 
     public String getUsername() {
@@ -41,14 +41,14 @@ public class CreateUserRequest {
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
-    
+
     public static final class Builder {
         private final CreateUserRequest object;
 
         private Builder(final CreateUserRequest template) {
-        	this.object = template;
+            this.object = template;
         }
-        
+
         public static Builder create() {
             return new Builder(new CreateUserRequest());
         }
@@ -60,15 +60,15 @@ public class CreateUserRequest {
         public CreateUserRequest build() {
             return new CreateUserRequest(object);
         }
-        
+
         public Builder withUsername(String username) {
             object.username = username;
             return this;
         }
-        
+
         public Builder withAccessToken(String accessToken) {
-        	object.accessToken = accessToken;
-        	return this;
+            object.accessToken = accessToken;
+            return this;
         }
-   }
+    }
 }
