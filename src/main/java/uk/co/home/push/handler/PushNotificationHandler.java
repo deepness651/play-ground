@@ -29,7 +29,7 @@ public class PushNotificationHandler {
     public void pushNotification(User user, PushNotificationRequest pushNotificationRequest) throws ExecutionException, InterruptedException {
         SimplePushNotification simplePushNotification = newSimplePushNotification(pushNotificationRequest);
 
-        logger.info("Sending a push notification to pushbullet API for user {} with title {} ", user.getUsername(),
+        logger.debug("Sending a push notification to pushbullet API for user {} with title {} ", user.getUsername(),
                 simplePushNotification.getTitle());
         Mono<ResponseEntity<String>> pushNotificationResponse = webClient.post().uri("/v2/pushes")
                 .body(Mono.just(simplePushNotification), SimplePushNotification.class).header("Access-Token", user.getAccessToken())
@@ -37,9 +37,11 @@ public class PushNotificationHandler {
 
         ResponseEntity<String> response = pushNotificationResponse.toFuture().get();
         if (response.getStatusCode().is4xxClientError()) {
+            logger.error("Push API -> Status : {}, Error : {}", response.getStatusCode(), response.getStatusCode().getReasonPhrase());
             throw new BadRequestException(
                     "Push API -> Status : " + response.getStatusCode() + ", Error : " + response.getStatusCode().getReasonPhrase());
         } else if (response.getStatusCode().is5xxServerError()) {
+            logger.error("Push API -> Status : {}, Error : {}", response.getStatusCode(), response.getStatusCode().getReasonPhrase());
             throw new RuntimeException(
                     "Push API -> Status : " + response.getStatusCode() + ", Error : " + response.getStatusCode().getReasonPhrase());
         }

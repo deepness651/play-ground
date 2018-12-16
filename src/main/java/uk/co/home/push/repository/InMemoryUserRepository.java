@@ -42,13 +42,15 @@ public class InMemoryUserRepository implements UserRepository {
     public void incrementUserNotificationCount(String username) {
         User user = userMap.get(username);
         if (user == null) {
+            logger.error("The user {} doesn't exist", username);
             throw new DoesNotExistException("The user doesn't exist");
         }
         User modifiedUser = User.Builder.createFrom(user).withNumOfNotificationsPushed(user.getNumOfNotificationsPushed() + 1).build();
 
         boolean modified = userMap.replace(username, user, modifiedUser);
-        logger.info("Incrementing notification count for user {} is {} ", username, modified ? "successful" : "failed");
+        logger.debug("Incrementing notification count for user {} is {} ", username, modified ? "successful" : "failed");
         if (!modified) {
+            logger.error("Incrementing notification count failure for user {}", username);
             throw new RuntimeException("Incrementing notification count failure");
         }
     }
@@ -59,9 +61,10 @@ public class InMemoryUserRepository implements UserRepository {
                 .withCreationTime(new Date()).withNumOfNotificationsPushed(0).build();
 
         if (userMap.putIfAbsent(createUserRequest.getUsername(), user) != null) {
+            logger.error("The user {} is already registered", createUserRequest.getUsername());
             throw new AlreadyRegisteredException("The user is already registered");
         }
-        logger.info("Created user {} ", user.getUsername());
+        logger.debug("Created user {} ", user.getUsername());
         return user;
     }
 

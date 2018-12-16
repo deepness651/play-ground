@@ -1,5 +1,7 @@
 package uk.co.home.push.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,7 @@ import uk.co.home.push.status.DoesNotExistException;
 @RestController
 @RequestMapping(path = "api/v1", produces = MediaType.APPLICATION_JSON_VALUE, method = { RequestMethod.POST })
 public class PushController {
+    private static final Logger logger = LogManager.getLogger(PushController.class);
     private final UserRepository userRepository;
     private final PushNotificationHandler pushNotificationHandler;
 
@@ -50,9 +53,11 @@ public class PushController {
             userRepository.incrementUserNotificationCount(user.getUsername());
             return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.OK, "Push notification sent"), standardCacheHeaders, HttpStatus.OK);
         } catch (DoesNotExistException | BadRequestException e) {
+            logger.error("Status : {}, Error : {}", HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
             return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.BAD_REQUEST, e.getLocalizedMessage()), standardCacheHeaders,
                     HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
+            logger.error("Status : {}, Error : {}", HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage());
             return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage()), standardCacheHeaders,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }

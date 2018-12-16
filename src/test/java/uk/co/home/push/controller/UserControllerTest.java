@@ -78,8 +78,7 @@ public class UserControllerTest {
         when(userRepository.getUsers()).thenReturn(users);
         mockMvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isNoContent())
                 .andExpect(header().string(CACHE_CONTROL, CACHE_HEADER_VALUES)).andExpect(header().string(PRAGMA, NO_CACHE))
-                .andExpect(header().string(EXPIRES, "0")).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().string(mapper.writeValueAsString(new ApiStatus(HttpStatus.NO_CONTENT, "No users just yet"))));
+                .andExpect(header().string(EXPIRES, "0")).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 
         verify(userRepository).getUsers();
     }

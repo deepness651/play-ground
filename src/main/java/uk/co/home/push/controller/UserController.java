@@ -2,6 +2,8 @@ package uk.co.home.push.controller;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,7 @@ import uk.co.home.push.status.ApiStatus;
 @RestController
 @RequestMapping(path = "api/v1", produces = MediaType.APPLICATION_JSON_VALUE, method = { RequestMethod.GET, RequestMethod.POST })
 public class UserController {
+    private static final Logger logger = LogManager.getLogger(UserController.class);
     private final UserRepository userRepository;
 
     @Autowired
@@ -38,10 +41,10 @@ public class UserController {
         try {
             var users = userRepository.getUsers();
             return users.isEmpty()
-                    ? new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.NO_CONTENT, "No users just yet"), standardCacheHeaders,
-                            HttpStatus.NO_CONTENT)
+                    ? new ResponseEntity<ApiStatus>(standardCacheHeaders, HttpStatus.NO_CONTENT)
                     : new ResponseEntity<List<User>>(users, standardCacheHeaders, HttpStatus.OK);
         } catch (Exception e) {
+            logger.error("Status : {}, Error : {}", HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage());
             return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage()), standardCacheHeaders,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -53,6 +56,7 @@ public class UserController {
         try {
             // validate request
             if (createUserRequest.getUsername().isBlank() || createUserRequest.getAccessToken().isBlank()) {
+                logger.error("Status : {}, Error : {}", HttpStatus.BAD_REQUEST, "Bad request");
                 return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.BAD_REQUEST, "Bad request"), standardCacheHeaders,
                         HttpStatus.BAD_REQUEST);
             }
@@ -63,6 +67,7 @@ public class UserController {
             return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.CONFLICT, e.getLocalizedMessage()), standardCacheHeaders,
                     HttpStatus.CONFLICT);
         } catch (Exception e) {
+            logger.error("Status : {}, Error : {}", HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage());
             return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage()), standardCacheHeaders,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
