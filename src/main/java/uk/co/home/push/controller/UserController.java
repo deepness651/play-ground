@@ -61,7 +61,7 @@ public class UserController {
                         HttpStatus.BAD_REQUEST);
             }
 
-            var user = userRepository.createUser(createUserRequest);
+            User user = userRepository.createUser(createUserRequest);
             return new ResponseEntity<User>(user, standardCacheHeaders, HttpStatus.CREATED);
         } catch (AlreadyRegisteredException e) {
             return new ResponseEntity<ApiStatus>(new ApiStatus(HttpStatus.CONFLICT, e.getLocalizedMessage()), standardCacheHeaders,

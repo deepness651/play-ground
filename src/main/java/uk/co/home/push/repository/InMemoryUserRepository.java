@@ -20,7 +20,7 @@ import uk.co.home.push.status.DoesNotExistException;
 @Component
 public class InMemoryUserRepository implements UserRepository {
     private static final Logger logger = LogManager.getLogger(InMemoryUserRepository.class);
-    private final ConcurrentMap<String, User> userMap;
+    private ConcurrentMap<String, User> userMap;
 
     public InMemoryUserRepository() {
         this.userMap = new ConcurrentHashMap<>(1000);
@@ -57,7 +57,7 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public User createUser(CreateUserRequest createUserRequest) {
-        var user = User.Builder.create().withUsername(createUserRequest.getUsername()).withAccessToken(createUserRequest.getAccessToken())
+        User user = User.Builder.create().withUsername(createUserRequest.getUsername()).withAccessToken(createUserRequest.getAccessToken())
                 .withCreationTime(new Date()).withNumOfNotificationsPushed(0).build();
 
         if (userMap.putIfAbsent(createUserRequest.getUsername(), user) != null) {

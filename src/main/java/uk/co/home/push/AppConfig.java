@@ -31,8 +31,8 @@ public class AppConfig {
 
     @Bean
     WebClient webClient() {
-        var proxyHost = System.getProperty("https.proxyHost");
-        var proxyPort = System.getProperty("https.proxyPort");
+        String proxyHost = System.getProperty("https.proxyHost");
+        String proxyPort = System.getProperty("https.proxyPort");
 
         TcpClient tcpClient;
         if (proxyHost != null) {

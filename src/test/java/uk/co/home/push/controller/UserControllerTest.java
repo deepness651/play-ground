@@ -86,7 +86,7 @@ public class UserControllerTest {
     @Test
     public void itShouldCreateNewUser() throws Exception {
         var createRequest = CreateUserRequest.Builder.create().withUsername(A_USER).withAccessToken(AN_ACCESS_TOKEN).build();
-        var newUser = newUser(A_USER, AN_ACCESS_TOKEN);
+        User newUser = newUser(A_USER, AN_ACCESS_TOKEN);
         when(userRepository.createUser(eq(createRequest))).thenReturn(newUser);
 
         mockMvc.perform(post("/api/v1/users/create").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(createRequest)))

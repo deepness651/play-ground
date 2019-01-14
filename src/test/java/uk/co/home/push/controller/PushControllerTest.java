@@ -63,7 +63,7 @@ public class PushControllerTest {
 
     @Test
     public void itShouldPushNotification() throws Exception {
-        var user = newUser(A_USER, "anAccessToken");
+        User user = newUser(A_USER, "anAccessToken");
         var pushNotificationRequest = PushNotificationRequest.Builder.create().withUsername(A_USER).withTitle(A_TITLE).withBody(A_MESSAGE).build();
 
         when(userRepository.getUser(eq(A_USER))).thenReturn(user);
@@ -109,7 +109,7 @@ public class PushControllerTest {
 
     @Test
     public void itShouldBadRequest_PushApi() throws Exception {
-        var user = newUser(A_USER, "anAccessToken");
+        User user = newUser(A_USER, "anAccessToken");
         var pushNotificationRequest = PushNotificationRequest.Builder.create().withUsername(A_USER).withTitle(A_TITLE).withBody(A_MESSAGE).build();
 
         when(userRepository.getUser(eq(A_USER))).thenReturn(user);
@@ -126,7 +126,7 @@ public class PushControllerTest {
 
     @Test
     public void itShouldFail_PushApi() throws Exception {
-        var user = newUser(A_USER, "anAccessToken");
+        User user = newUser(A_USER, "anAccessToken");
         var pushNotificationRequest = PushNotificationRequest.Builder.create().withUsername(A_USER).withTitle(A_TITLE).withBody(A_MESSAGE).build();
 
         when(userRepository.getUser(eq(A_USER))).thenReturn(user);
@@ -143,7 +143,7 @@ public class PushControllerTest {
 
     @Test
     public void itShouldFail_Increment() throws Exception {
-        var user = newUser(A_USER, "anAccessToken");
+        User user = newUser(A_USER, "anAccessToken");
         var pushNotificationRequest = PushNotificationRequest.Builder.create().withUsername(A_USER).withTitle(A_TITLE).withBody(A_MESSAGE).build();
 
         when(userRepository.getUser(eq(A_USER))).thenReturn(user);

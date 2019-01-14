@@ -59,7 +59,7 @@ class PushNotificationHandlerTest {
 
     @Test
     void testPushNotificationSuccess() throws Exception {
-        var user = newUser(A_USER, "anAccessToken");
+        User user = newUser(A_USER, "anAccessToken");
         var pushNotificationRequest = PushNotificationRequest.Builder.create().withUsername(A_USER).withTitle(A_TITLE).withBody(A_MESSAGE).build();
         pushApiMock.enqueue(new MockResponse().setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE).setBody(BODY_SOME_BODY));
 
@@ -72,7 +72,7 @@ class PushNotificationHandlerTest {
 
     @Test
     void testPushNotificationFailsWith4xx() throws Exception {
-        var user = newUser(A_USER, "anAccessToken");
+        User user = newUser(A_USER, "anAccessToken");
         var pushNotificationRequest = PushNotificationRequest.Builder.create().withUsername(A_USER).withTitle(A_TITLE).withBody(A_MESSAGE).build();
 
         pushApiMock.enqueue(new MockResponse().setResponseCode(401).setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -89,7 +89,7 @@ class PushNotificationHandlerTest {
 
     @Test
     void testPushNotificationFailsWith5xx() throws Exception {
-        var user = newUser(A_USER, "anAccessToken");
+        User user = newUser(A_USER, "anAccessToken");
         var pushNotificationRequest = PushNotificationRequest.Builder.create().withUsername(A_USER).withTitle(A_TITLE).withBody(A_MESSAGE).build();
 
         pushApiMock.enqueue(new MockResponse().setResponseCode(500).setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -10,7 +10,7 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
 import uk.co.home.push.domain.CreateUserRequest;
-import uk.co.home.push.repository.InMemoryUserRepository;
+import uk.co.home.push.domain.User;
 import uk.co.home.push.status.AlreadyRegisteredException;
 import uk.co.home.push.status.DoesNotExistException;
 
@@ -37,7 +37,7 @@ public class InMemoryUserRepositoryTest {
     public void testCreateUser() {
         CreateUserRequest createUserRequest = CreateUserRequest.Builder.create().withUsername(A_USER).withAccessToken(A_TOKEN).build();
 
-        var user = underTest.createUser(createUserRequest);
+        User user = underTest.createUser(createUserRequest);
         Assertions.assertEquals(A_USER, user.getUsername());
 
         var users = underTest.getUsers();
@@ -48,7 +48,7 @@ public class InMemoryUserRepositoryTest {
     public void testGetUsersWithTwoUsers() {
         CreateUserRequest createUserRequest = CreateUserRequest.Builder.create().withUsername(A_USER).withAccessToken(A_TOKEN).build();
 
-        var user = underTest.createUser(createUserRequest);
+        User user = underTest.createUser(createUserRequest);
         Assertions.assertEquals(A_USER, user.getUsername());
 
         createUserRequest = CreateUserRequest.Builder.create().withUsername(ANOTHER_USER).withAccessToken(ANOTHER_TOKEN).build();
@@ -64,7 +64,7 @@ public class InMemoryUserRepositoryTest {
     public void testCreateUserFailDuplicateAttempt() {
         CreateUserRequest createUserRequest = CreateUserRequest.Builder.create().withUsername(A_USER).withAccessToken(A_TOKEN).build();
 
-        var user = underTest.createUser(createUserRequest);
+        User user = underTest.createUser(createUserRequest);
         Assertions.assertEquals(A_USER, user.getUsername());
 
         Executable closureContainingCodeToTest = () -> underTest.createUser(createUserRequest);
@@ -73,7 +73,7 @@ public class InMemoryUserRepositoryTest {
 
     @Test
     public void testGetUserWithNoUsers() {
-        var userTest = underTest.getUser(A_USER);
+        User userTest = underTest.getUser(A_USER);
         Assertions.assertNull(userTest);
     }
 
@@ -81,15 +81,15 @@ public class InMemoryUserRepositoryTest {
     public void testGetUserWithTwoUsers() {
         CreateUserRequest createUserRequest = CreateUserRequest.Builder.create().withUsername(A_USER).withAccessToken(A_TOKEN).build();
 
-        var aUser = underTest.createUser(createUserRequest);
+        User aUser = underTest.createUser(createUserRequest);
         Assertions.assertEquals(A_USER, aUser.getUsername());
 
         createUserRequest = CreateUserRequest.Builder.create().withUsername(ANOTHER_USER).withAccessToken(ANOTHER_TOKEN).build();
 
-        var anotherUser = underTest.createUser(createUserRequest);
+        User anotherUser = underTest.createUser(createUserRequest);
         Assertions.assertEquals(ANOTHER_USER, anotherUser.getUsername());
 
-        var userTest = underTest.getUser(A_USER);
+        User userTest = underTest.getUser(A_USER);
         Assertions.assertSame(aUser, userTest);
     }
 
@@ -97,11 +97,11 @@ public class InMemoryUserRepositoryTest {
     public void testIncrementNotificationCount() {
         CreateUserRequest createUserRequest = CreateUserRequest.Builder.create().withUsername(A_USER).withAccessToken(A_TOKEN).build();
 
-        var user = underTest.createUser(createUserRequest);
+        User user = underTest.createUser(createUserRequest);
         Assertions.assertEquals(A_USER, user.getUsername());
 
         underTest.incrementUserNotificationCount(A_USER);
-        var userTest = underTest.getUser(A_USER);
+        User userTest = underTest.getUser(A_USER);
 
         Assertions.assertNotSame(user, userTest);
         Assertions.assertTrue((user.getNumOfNotificationsPushed() + 1) == userTest.getNumOfNotificationsPushed());

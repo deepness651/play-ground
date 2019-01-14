@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import uk.co.home.push.domain.PushNotificationRequest;
+import uk.co.home.push.domain.User;
 import uk.co.home.push.handler.PushNotificationHandler;
 import uk.co.home.push.repository.UserRepository;
 import uk.co.home.push.status.ApiStatus;
@@ -44,7 +45,7 @@ public class PushController {
                 throw new BadRequestException("Bad request");
             }
 
-            var user = userRepository.getUser(pushNotificationRequest.getUsername());
+            User user = userRepository.getUser(pushNotificationRequest.getUsername());
             if (user == null) { // user doesn't exist
                 throw new DoesNotExistException("User doesn't exist");
             }
